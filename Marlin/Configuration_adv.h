@@ -19,11 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#pragma once
 
-#if ENABLED(creality_silent_board) //ignore this line of code
-//#define LIN_ADVANCE //ignore this line of code
-#else //ignore this line of code
+
+
+#pragma once
 
 
 /*** *** *** Section 15 - Last Printer Settings *** *** ***/
@@ -35,7 +34,8 @@
   #define LIN_ADVANCE_K 0    // Unit: mm compression per 1mm/s extruder speed. Change value in GCODE. Not here
   //#define LA_DEBUG            // If enabled, this will generate debug information output over USB.
 #endif
-#endif
+
+
 /**
  * Configuration_adv.h
  *
@@ -184,7 +184,7 @@
    * and/or decrease WATCH_TEMP_INCREASE. WATCH_TEMP_INCREASE should not be set
    * below 2.
    */
-   #if (THERMAL_PROTECTION_LEVEL == 1)
+#if (THERMAL_PROTECTION_LEVEL == 1)
   #define WATCH_TEMP_PERIOD 20                // Seconds
   #define WATCH_TEMP_INCREASE 1               // Degrees Celsius
   #endif
@@ -198,13 +198,14 @@
   #define WATCH_TEMP_PERIOD 15                // Seconds
   #define WATCH_TEMP_INCREASE 2               // Degrees Celsius
   #endif
+
 #endif
 
 /**
  * Thermal Protection parameters for the bed are just as above for hotends.
  */
 #if ENABLED(THERMAL_PROTECTION_BED)
-  #if (THERMAL_PROTECTION_LEVEL == 1)
+#if (THERMAL_PROTECTION_LEVEL == 1)
   #define THERMAL_PROTECTION_BED_PERIOD        15 // Seconds
   #define THERMAL_PROTECTION_BED_HYSTERESIS     1 // Degrees Celsius
   #endif
@@ -218,6 +219,8 @@
   #define THERMAL_PROTECTION_BED_PERIOD        15 // Seconds
   #define THERMAL_PROTECTION_BED_HYSTERESIS     2 // Degrees Celsius
   #endif
+
+
   /**
    * As described above, except for the bed (M140/M190/M303).
    */
@@ -376,15 +379,27 @@
  * Controller Fan
  * To cool down the stepper drivers and MOSFETs.
  *
- * The fan will turn on automatically whenever any stepper is enabled
- * and turn off after a set period after all steppers are turned off.
+ * The fan turns on automatically whenever any driver is enabled and turns
+ * off (or reduces to idle speed) shortly after drivers are turned off.
+ *
  */
-//#define USE_CONTROLLER_FAN
+#if defined(BTTSKRE3MINIV2_0) 
+#define USE_CONTROLLER_FAN // this allows fan1 to be configured to be used as a mainboard/ controller fan wwith e3 v2.0
+#else
+//define USE_CONTROLLER_FAN
+#endif
+
 #if ENABLED(USE_CONTROLLER_FAN)
-  //#define CONTROLLER_FAN_PIN -1           // Set a custom pin for the controller fan
-  #define CONTROLLERFAN_SECS 60             // Duration in seconds for the fan to run after all motors are disabled
-  #define CONTROLLERFAN_SPEED 255           // 255 == full speed
-  //#define CONTROLLERFAN_SPEED_Z_ONLY 127  // Reduce noise on machines that keep Z enabled
+  //#define CONTROLLER_FAN_PIN -1        // Set a custom pin for the controller fan
+  //#define CONTROLLER_FAN_USE_Z_ONLY    // With this option only the Z axis is considered
+  #define CONTROLLERFAN_SPEED_MIN      0 // (0-255) Minimum speed. (If set below this value the fan is turned off.)
+  #define CONTROLLERFAN_SPEED_ACTIVE 255 // (0-255) Active speed, used when any motor is enabled
+  #define CONTROLLERFAN_SPEED_IDLE     0 // (0-255) Idle speed, used when motors are disabled
+  #define CONTROLLERFAN_IDLE_TIME     60 // (seconds) Extra time to keep the fan running after disabling motors
+  //#define CONTROLLER_FAN_EDITABLE      // Enable M710 configurable settings
+  #if ENABLED(CONTROLLER_FAN_EDITABLE)
+    #define CONTROLLER_FAN_MENU          // Enable the Controller Fan submenu
+  #endif
 #endif
 
 // When first starting the main fan, run it at full speed for the
@@ -686,6 +701,7 @@
   #if ENABLED(BLTOUCH_v3_v3_1)
   #define BLTOUCH_SET_5V_MODE
   #endif
+
   /**
    * Safety: Activate if connecting a probe with an unknown voltage mode.
    * V3.0: Set a probe into mode selected above at Marlin startup. Required for 5V mode on 3.0
@@ -975,30 +991,29 @@
 // @section lcd
 
 #if EITHER(ULTIPANEL, EXTENSIBLE_UI)
-#if (HOMING_MOVEMENT_SPEEDK==1)
+  #if (HOMING_MOVEMENT_SPEEDK==1)
 #define MANUAL_FEEDRATE { 50*60, 50*60, 4*60, 2*60 } // Feedrates for manual moves along X, Y, Z, E from panel
-#endif
+#endif  
 
-#if (HOMING_MOVEMENT_SPEEDK==2)
-#define MANUAL_FEEDRATE { 70*60, 70*60, 15*60, 2*60 } // Feedrates for manual moves along X, Y, Z, E from panel
-#endif
+   #if (HOMING_MOVEMENT_SPEEDK==2)
+  #define MANUAL_FEEDRATE { 70*60, 70*60, 8*60, 2*60 } // Feedrates for manual moves along X, Y, Z, E from panel
+  #endif
 
-#if (HOMING_MOVEMENT_SPEEDK==3)
-#define MANUAL_FEEDRATE { 100*60, 100*60, 20*60, 2*60 } // Feedrates for manual moves along X, Y, Z, E from panel
-#endif
+   #if (HOMING_MOVEMENT_SPEEDK==3)
+  #define MANUAL_FEEDRATE { 100*60, 100*60, 8*60, 2*60 } // Feedrates for manual moves along X, Y, Z, E from panel
+  #endif
 
-#if (HOMING_MOVEMENT_SPEEDK==4)
-#define MANUAL_FEEDRATE { 130*60, 130*60, 38*60, 2*60 } // Feedrates for manual moves along X, Y, Z, E from panel
-#endif
+   #if (HOMING_MOVEMENT_SPEEDK==4)
+  #define MANUAL_FEEDRATE { 130*60, 130*60, 8*60, 2*60 } // Feedrates for manual moves along X, Y, Z, E from panel
+  #endif
 
-#if (HOMING_MOVEMENT_SPEEDK==5)
-#define MANUAL_FEEDRATE { 160*60, 160*60, 50*60, 2*60 } // Feedrates for manual moves along X, Y, Z, E from panel
-#endif
+  #if (HOMING_MOVEMENT_SPEEDK==5)
+  #define MANUAL_FEEDRATE { 160*60, 160*60, 8*60, 2*60 } // Feedrates for manual moves along X, Y, Z, E from panel
+  #endif
 
-#if (HOMING_MOVEMENT_SPEEDK==6)
-#define MANUAL_FEEDRATE { 200*60, 200*60, 200*60, 2*60 } // Feedrates for manual moves along X, Y, Z, E from panel
-#endif
-
+  #if (HOMING_MOVEMENT_SPEEDK==6)
+  #define MANUAL_FEEDRATE { 200*60, 200*60, 8*60, 2*60 } // Feedrates for manual moves along X, Y, Z, E from panel
+  #endif
   #define SHORT_MANUAL_Z_MOVE 0.025 // (mm) Smallest manual Z move (< 0.1mm)
   #if ENABLED(ULTIPANEL)
     #define MANUAL_E_MOVES_RELATIVE // Display extruder move distance rather than "position"
@@ -1107,6 +1122,10 @@
   //#define MENU_ADDAUTOSTART               // Add a menu option to run auto#.g files
 
   #define EVENT_GCODE_SD_STOP "G28XY"       // G-code to run on Stop Print (e.g., "G28XY" or "G27")
+
+  #if ENABLED(PRINTER_EVENT_LEDS)
+    #define PE_LEDS_COMPLETED_TIME  (30*60) // (seconds) Time to keep the LED "done" color before restoring normal illumination
+  #endif
 
   /**
    * Continue after Power-Loss (Creality3D)
@@ -1268,7 +1287,7 @@
   #endif
   #if ENABLED(SDCARD_LCD_FIX)
   #define SDCARD_CONNECTION LCD // Forces SD card to work on external LCD/ TFT. Some screens do not need this fix.
-  #endif 
+  #endif
 
 #endif // SDSUPPORT
 
@@ -1534,10 +1553,10 @@
 #if ENABLED(BABYSTEPPING)
   //#define INTEGRATED_BABYSTEPPING         // EXPERIMENTAL integration of babystepping into the Stepper ISR
   //#define BABYSTEP_WITHOUT_HOMING
-  #define BABYSTEP_XY                     // Also enable X/Y Babystepping. Not supported on DELTA!
+  //#define BABYSTEP_XY                     // Also enable X/Y Babystepping. Not supported on DELTA!
   #define BABYSTEP_INVERT_Z false           // Change if Z babysteps should go the other way
   #define BABYSTEP_MULTIPLICATOR_Z  5       // Babysteps are very small. Increase for faster motion.
-  #define BABYSTEP_MULTIPLICATOR_XY 5
+  #define BABYSTEP_MULTIPLICATOR_XY 1
 
   #define DOUBLECLICK_FOR_Z_BABYSTEPPING  // Double-click on the Status Screen for Z Babystepping.
   #if ENABLED(DOUBLECLICK_FOR_Z_BABYSTEPPING)
@@ -1552,7 +1571,7 @@
 
   //#define BABYSTEP_DISPLAY_TOTAL          // Display total babysteps since last G28
 
-#if ENABLED(Auto_bed_level)
+  #if ENABLED(Auto_bed_level)
   #define BABYSTEP_ZPROBE_OFFSET   
   #endif       // Combine M851 Z and Babystepping
   #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
@@ -1569,7 +1588,7 @@
  * Assumption: advance [steps] = k * (delta velocity [steps/s])
  * K=0 means advance disabled.
  *
- * NOTE: K values for LIN_ADVANCE 1.5 differ from earlier versions!
+ * NOTE: K values for LIN_ADVANCE 1.5 differ from earlier versions! // values defined above in section 15. 
  *
  * Set K around 0.22 for 3mm PLA Direct Drive with ~6.5cm between the drive gear and heatbreak.
  * Larger K values will be needed for flexible filament and greater distances.
@@ -1579,6 +1598,8 @@
  * See http://marlinfw.org/docs/features/lin_advance.html for full instructions.
  * Mention @Sebastianv650 on GitHub to alert the author of any issues.
  */
+
+
 
 // @section leveling
 
@@ -1700,6 +1721,7 @@
 #endif
 #endif
 
+
 // Support for G5 with XYZE destination and IJPQ offsets. Requires ~2666 bytes.
 //#define BEZIER_CURVE_SUPPORT
 
@@ -1785,7 +1807,7 @@
 
 // The ASCII buffer for serial input
 #define MAX_CMD_SIZE 96
-#define BUFSIZE 32
+#define BUFSIZE 4
 
 // Transmission to Host Buffer Size
 // To save 386 bytes of PROGMEM (and TX_BUFFER_SIZE+3 bytes of RAM) set to 0.
@@ -1933,18 +1955,18 @@
   #define PAUSE_PARK_RETRACT_FEEDRATE         60  // (mm/s) Initial retract feedrate.
   #define PAUSE_PARK_RETRACT_LENGTH            2  // (mm) Initial retract.
                                                   // This short retract is done immediately, before parking the nozzle.
-  #define FILAMENT_CHANGE_UNLOAD_FEEDRATE     10  // (mm/s) Unload filament feedrate. This can be pretty fast. Consider 30 mm/s
+  #define FILAMENT_CHANGE_UNLOAD_FEEDRATE     10  // (mm/s) Unload filament feedrate. This can be pretty fast.
   #define FILAMENT_CHANGE_UNLOAD_ACCEL        25  // (mm/s^2) Lower acceleration may allow a faster feedrate.
-  #define FILAMENT_CHANGE_UNLOAD_LENGTH      Total_filament_path  // User input for Cheetah 5.0 in config.h (mm) The length of filament for a complete unload.
+  #define FILAMENT_CHANGE_UNLOAD_LENGTH      Total_filament_path    // (mm) The length of filament for a complete unload.
                                                   //   For Bowden, the full length of the tube and nozzle.
                                                   //   For direct drive, the full length of the nozzle.
                                                   //   Set to 0 for manual unloading.
   #define FILAMENT_CHANGE_SLOW_LOAD_FEEDRATE   6  // (mm/s) Slow move when starting load.
   #define FILAMENT_CHANGE_SLOW_LOAD_LENGTH     0  // (mm) Slow length, to allow time to insert material.
                                                   // 0 to disable start loading and skip to fast load only
-  #define FILAMENT_CHANGE_FAST_LOAD_FEEDRATE   6  // (mm/s) Load filament feedrate. This can be pretty fast. Consider 30 mm/s
+  #define FILAMENT_CHANGE_FAST_LOAD_FEEDRATE   6  // (mm/s) Load filament feedrate. This can be pretty fast.
   #define FILAMENT_CHANGE_FAST_LOAD_ACCEL     25  // (mm/s^2) Lower acceleration may allow a faster feedrate.
-  #define FILAMENT_CHANGE_FAST_LOAD_LENGTH    Total_filament_path  // User input for Cheetah 5.0 in config.h (mm) Load length of filament, from extruder gear to nozzle.
+  #define FILAMENT_CHANGE_FAST_LOAD_LENGTH     Total_filament_path    // (mm) Load length of filament, from extruder gear to nozzle.
                                                   //   For Bowden, the full length of the tube and nozzle.
                                                   //   For direct drive, the full length of the nozzle.
   //#define ADVANCED_PAUSE_CONTINUOUS_PURGE       // Purge continuously up to the purge length until interrupted.
@@ -1963,7 +1985,7 @@
   #define FILAMENT_UNLOAD_PURGE_FEEDRATE      25  // (mm/s) feedrate to purge before unload
 
   #define PAUSE_PARK_NOZZLE_TIMEOUT           45  // (seconds) Time limit before the nozzle is turned off for safety.
-  #define FILAMENT_CHANGE_ALERT_BEEPS         10  // Number of alert beeps to play when a response is needed.
+  #define FILAMENT_CHANGE_ALERT_BEEPS         5  // Number of alert beeps to play when a response is needed.
   #define PAUSE_PARK_NO_STEPPER_TIMEOUT           // Enable for XYZ steppers to stay powered on during filament change.
 
   #define PARK_HEAD_ON_PAUSE                    // Park the nozzle during pause and filament change.
@@ -2105,11 +2127,12 @@
   #define INTERPOLATE       true  // Interpolate X/Y/Z_MICROSTEPS to 256
 
   #if AXIS_IS_TMC(X)
- #if AXIS_DRIVER_TYPE_X(TMC2208)
+#if AXIS_DRIVER_TYPE_X(TMC2208)
     #define X_CURRENT 760 // for TMC2208 only
     #else
     #define X_CURRENT       580        // (mA) RMS current. Multiply by 1.414 for peak current.
-    #endif //x driver current swtich    #define X_CURRENT_HOME  X_CURRENT  // (mA) RMS current for sensorless homing
+    #endif //x driver current swtich
+    #define X_CURRENT_HOME  X_CURRENT  // (mA) RMS current for sensorless homing
     #define X_MICROSTEPS     16    // 0..256
     #define X_RSENSE          0.11
     #define X_CHAIN_POS      -1    // <=0 : Not chained. 1 : MCU MOSI connected. 2 : Next in chain, ...
@@ -2144,6 +2167,7 @@
   #endif
 
   #if AXIS_IS_TMC(Z)
+
 #if AXIS_DRIVER_TYPE_Z(TMC2208)
     #define Z_CURRENT 760 // for TMC2208 only
     #else
@@ -2184,7 +2208,7 @@
     #define E0_CURRENT 900 // for TMC2208 only
     #else
     #define E0_CURRENT       650        // (mA) RMS current. Multiply by 1.414 for peak current.
-    #endif //x driver current swtich    
+    #endif //x driver current swtich  
     #define E0_MICROSTEPS    16
     #define E0_RSENSE         0.11
     #define E0_CHAIN_POS     -1
@@ -2282,22 +2306,26 @@
    * on the same serial port, either here or in your board's pins file.
    */
   #define  X_SLAVE_ADDRESS 0
-  #if ENABLED (BTTSKRE3MINIV1_0)
+  #if defined(BTTSKRE3MINIV1_0) || defined(BTTSKRE3MINIV2_0) 
   #define Y_SLAVE_ADDRESS 2
   #else
   #define  Y_SLAVE_ADDRESS 0  
-  #endif 
+  #endif
+  #if defined(BTTSKRE3MINIV2_0) 
+  #define  Z_SLAVE_ADDRESS 1
+  #else
   #define  Z_SLAVE_ADDRESS 0
+  #endif 
   #define X2_SLAVE_ADDRESS 0
   #define Y2_SLAVE_ADDRESS 0
   #define Z2_SLAVE_ADDRESS 0
   #define Z3_SLAVE_ADDRESS 0
   #define Z4_SLAVE_ADDRESS 0
-  #if ENABLED (BTTSKRE3MINIV1_0)
+  #if defined(BTTSKRE3MINIV1_0) || defined(BTTSKRE3MINIV2_0) 
   #define E0_SLAVE_ADDRESS 3
   #else
   #define E0_SLAVE_ADDRESS 0
-  #endif 
+  #endif
   #define E1_SLAVE_ADDRESS 0
   #define E2_SLAVE_ADDRESS 0
   #define E3_SLAVE_ADDRESS 0
@@ -2321,12 +2349,9 @@
    */
   #define STEALTHCHOP_XY
   #define STEALTHCHOP_Z
-  #if AXIS_DRIVER_TYPE_E0(TMC2208) || AXIS_DRIVER_TYPE_E0(TMC2208_STANDALONE)
-  #define SQUARE_WAVE_STEPPING
-  #define MINIMUM_STEPPER_PULSE 2
-  #else  
   #define STEALTHCHOP_E 
-  #endif 
+  
+
   /**
    * Optimize spreadCycle chopper parameters by using predefined parameter sets
    * or with the help of an example included in the library.
@@ -2341,7 +2366,7 @@
    * Define you own with
    * { <off_time[1..15]>, <hysteresis_end[-3..12]>, hysteresis_start[1..8] }
    */
-  //#define CHOPPER_TIMING CHOPPER_DEFAULT_12V
+  //#define CHOPPER_TIMING CHOPPER_DEFAULT_12V // value defined in printer_def.h or custom_printer option in cheetah's 5.0's 15 sections.
 
   /**
    * Monitor Trinamic drivers for error conditions,
@@ -2383,7 +2408,7 @@
   #define Z2_HYBRID_THRESHOLD      3
   #define Z3_HYBRID_THRESHOLD      3
   #define Z4_HYBRID_THRESHOLD      3
-  #define E0_HYBRID_THRESHOLD     60
+  #define E0_HYBRID_THRESHOLD     30
   #define E1_HYBRID_THRESHOLD     30
   #define E2_HYBRID_THRESHOLD     30
   #define E3_HYBRID_THRESHOLD     30
@@ -2419,15 +2444,16 @@
 
   #if EITHER(SENSORLESS_HOMING, SENSORLESS_PROBING)
     // TMC2209: 0...255. TMC2130: -64...63
-     #if AXIS_DRIVER_TYPE_X(TMC2209) //Auto TMC value selections on Cheetah 5.0 based on selected TMC2209 values
+    #if AXIS_DRIVER_TYPE_X(TMC2209) //Auto TMC value selections on Cheetah 5.0 based on selected TMC2209 values
     #define X_STALL_SENSITIVITY  120 // Please attempt to tune x stall sensititivy via host, M914 Xchang_value. Acceptable values 0 to 255
     #define X2_STALL_SENSITIVITY X_STALL_SENSITIVITY
     #define Y_STALL_SENSITIVITY  120 // Please attempt to tune x stall sensititivy via host, M914 Ychang_value. Acceptable values 0 to 255
     #else // Auto TMC value selections on Cheetah 5.0 based on selected all other trinamic values except TMC2209
-    #define X_STALL_SENSITIVITY  50 // Please attempt to tune x stall sensititivy via host, M914 Xchang_value. Acceptable values -63 to 63
+    #define X_STALL_SENSITIVITY  10 // Please attempt to tune x stall sensititivy via host, M914 Xchang_value. Acceptable values -63 to 63
     #define X2_STALL_SENSITIVITY X_STALL_SENSITIVITY 
-    #define Y_STALL_SENSITIVITY  50 // Please attempt to tune x stall sensititivy via host, M914 Ychang_value
+    #define Y_STALL_SENSITIVITY  10 // Please attempt to tune x stall sensititivy via host, M914 Ychang_value
     #endif
+
     //#define Z_STALL_SENSITIVITY  8
     //#define SPI_ENDSTOPS              // TMC2130 only
     //#define IMPROVE_HOMING_RELIABILITY
@@ -2448,6 +2474,7 @@
   #else
   #define TMC_DEBUG 
   #endif
+
   /**
    * You can set your own advanced settings by filling in predefined functions.
    * A list of available functions can be found on the library github page
@@ -2985,6 +3012,7 @@
   #define USER_DESC_8 "Home & Info"
   #define USER_GCODE_8 "G28\nM503"*/
 #endif
+
 
 /**
  * Host Action Commands

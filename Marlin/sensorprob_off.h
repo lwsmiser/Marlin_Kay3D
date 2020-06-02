@@ -15,6 +15,11 @@
 //below are the mounts available as offsets. Up to double nests can be configured. #if, #if, #define
 
   #if ENABLED(BLTOUCH) //variable
+
+    #if ENABLED(KAY3DCoreXY_BLTOUCH_E5P) //variable
+      #define NOZZLE_TO_PROBE_OFFSET { 36, -2, 0 }
+    #endif
+
     #if ENABLED(Herome_fanduct_40105015) //variable
       #define NOZZLE_TO_PROBE_OFFSET { -42, -16, 0 }
     #endif
@@ -39,6 +44,10 @@
 
 
    #if ENABLED(FIX_MOUNTED_PROBE) //variable
+
+   #if ENABLE (KAY3DCoreXY_KAVA_E3)
+      #define NOZZLE_TO_PROBE_OFFSET { -42, -12, 0 }
+      #endif 
 
     #if ENABLED(Herome_fanduct_40105015) //variable
       #define NOZZLE_TO_PROBE_OFFSET { -45.4, -12, 0 }

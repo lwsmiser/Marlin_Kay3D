@@ -45,8 +45,7 @@
    *
    * See the included examples for guidance
    */
-
-#if ENABLED(Ender_3)
+ #if ENABLED(Ender_3)
 #include "../../../kay3d_statusscreens/_Statusscreen_E3.h"
 #endif
 
@@ -83,7 +82,15 @@
 #include "../../../kay3d_statusscreens/_Statusscreen_CR10.h"
 #endif
 
-#if ENABLED(KAY3D_CoreXY)
+#if ENABLED(KAY3D_CoreXY_E3)
+#include "../../../kay3d_statusscreens/_Statusscreen_E3.h"
+#endif
+
+#if ENABLED(KAY3D_CoreXY_E5)
+#include "../../../kay3d_statusscreens/_Statusscreen_E3.h"
+#endif
+
+#if ENABLED(KAY3D_CoreXY_E5P)
 #include "../../../kay3d_statusscreens/_Statusscreen_E3.h"
 #endif
 

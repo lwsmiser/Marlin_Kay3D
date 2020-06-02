@@ -69,7 +69,15 @@
 #include "../../../kay3d_bootscreens/_Bootscreen_CR10.h"
 #endif
 
-#if ENABLED(KAY3D_CoreXY)
+#if ENABLED(KAY3D_CoreXY_E3)
+#include "../../../kay3d_bootscreens/_Bootscreen_kay3d.h"
+#endif
+
+#if ENABLED(KAY3D_CoreXY_E5)
+#include "../../../kay3d_bootscreens/_Bootscreen_kay3d.h"
+#endif
+
+#if ENABLED(KAY3D_CoreXY_E5P)
 #include "../../../kay3d_bootscreens/_Bootscreen_kay3d.h"
 #endif
 

@@ -12,11 +12,20 @@
 
 #include "Configuration.h"
 
+
+#if ENABLED(BTTSKRE3MINIV2_0)
+#define motherboard_name BOARD_BTT_SKR_MINI_E3_V2_0
+#define SERIAL_PORT 2
+#define SERIAL_PORT_2 -1
+#define BAUDRATE 115200
+#endif
+
+
 #if ENABLED(BTTSKRE3MINIV1_2)
 #define motherboard_name BOARD_BTT_SKR_MINI_E3_V1_2
 #define SERIAL_PORT 2
 #define SERIAL_PORT_2 -1
-#define BAUDRATE 250000
+#define BAUDRATE 115200
 #endif
 
 #if ENABLED(BTTSKR1_3)

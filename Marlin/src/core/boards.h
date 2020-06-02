@@ -103,6 +103,7 @@
 #define BOARD_HJC2560C_REV2           1147  // ADIMLab Gantry v2
 #define BOARD_TANGO                   1148  // BIQU Tango V1
 #define BOARD_MKS_GEN_L_V2            1149  // MKS GEN L V2
+#define BOARD_COPYMASTER_3D           1150  // Copymaster 3D
 
 //
 // RAMBo and derivatives
@@ -143,6 +144,7 @@
 #define BOARD_LEAPFROG_XEED2015       1321  // Leapfrog Xeed 2015
 #define BOARD_PICA_REVB               1322  // PICA Shield (original version)
 #define BOARD_PICA                    1323  // PICA Shield (rev C or later)
+#define BOARD_INTAMSYS40              1324  // Intamsys 4.0 (Funmat HT)
 
 //
 // ATmega1281, ATmega2561
@@ -287,6 +289,7 @@
 #define BOARD_BTT_SKR_MINI_V1_1       4012  // BigTreeTech SKR Mini v1.1 (STM32F103RC)
 #define BOARD_BTT_SKR_MINI_E3_V1_0    4013  // BigTreeTech SKR Mini E3 (STM32F103RC)
 #define BOARD_BTT_SKR_MINI_E3_V1_2    4014  // BigTreeTech SKR Mini E3 V1.2 (STM32F103RC)
+#define BOARD_BTT_SKR_MINI_E3_V2_0    4015  // BigTreeTech SKR Mini E3 V2.0 (STM32F103RC)
 #define BOARD_BTT_SKR_E3_DIP          4015  // BigTreeTech SKR E3 DIP V1.0 (STM32F103RC / STM32F103RE)
 #define BOARD_JGAURORA_A5S_A1         4016  // JGAurora A5S A1 (STM32F103ZET6)
 #define BOARD_FYSETC_AIO_II           4017  // FYSETC AIO_II

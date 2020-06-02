@@ -1,9 +1,9 @@
 /**The KAY3D Cheetah Firmware is brought to you by our software devs, the awesome 3D Printing community, and of course, we cannot forget the Marlin team
  * that has spent countless days, nights and years building Marlin up till where it is today.
  * 
- * This firmware is built on Marlin 2.0.5.1 
+ * This firmware is built on Marlin 2.0.5.3 
  *  
- * This firmware has a simple set up Wizard. Go through all 14 sections, choose what you need to, ignore what you don't have, key in custom values if required
+ * This firmware has a simple set up text-based Wizard. Go through all 14 sections, choose what you need to, ignore what you don't have, key in custom values if required
  * and hit compile.
  * It's really that simple. 
  * 
@@ -45,12 +45,13 @@
  *
  */
 
+
+
 //#define kay3d_debuggingmode // for debugging purposes only. 
 //#define Compress_space // Once enabled, these things are automatically disabled: Speaker, Show Bootscreen, Arc Support. Slim LCD will enabled automatically 
 //#define super_compress_space // Once enabled, you will lose your SD card support. You have to send prints via USB or Octoprint
-//#define creality_silent_board // Enable this, if you have a silent board. This will switch off Linear advance automatically. Known issue with Creality silent boards.
 
-#include "printer_def.h"
+#include "printer_def.h" // file PATH names are relative to your Marlin Folder. There is no need to change to your C:/ drive exact path etc :)
 #include "board_def.h"
 #include "hotext_def.h"
 #include "sensorprob_off.h"
@@ -67,9 +68,10 @@
 /*** *** *** *START HERE . Section 1A - Choose your board type. The KAY3D team is working hard to integrate as many boards as we can*/
 
 //#define Original_creality1 // Choose this if you have an original creality board - Ender 3/ Ender 3 pro/ Ender 5. Sanguino 1284P Boards
-//#define Original_creality2 / Choose this if you have an original creality board - CR-10S, CR-10S5 / Ender 5 Plus. ATmega2560 Boards
+//#define Original_creality2 // Choose this if you have an original creality board - CR-10S, CR-10S5 / Ender 5 Plus. ATmega2560 Boards
 //#define BTTSKRE3MINIV1_0 // Choose this if you are using BigTreeTech SKR Mini E3 V1.0
 //#define BTTSKRE3MINIV1_2 // Choose this if you are using BigTreeTech SKR Mini E3 v1.2 
+//#define BTTSKRE3MINIV2_0 // Choose this if you are using BigTreeTech SKR Mini E3 v2.0
 //#define BTTSKR1_3 // Choose this if you are using BigTreeTech SKR 1.3 
 //#define BTTGTRV1_0 //[BETA] Choose this if you are using BigTreeTech GTR 1.0
 //#define BTTSKR1_4 // [BETA] Choose this if you are using BigTreeTech SKR 1.4
@@ -90,6 +92,7 @@ Board name: Original_creality2, change_value = mega2560 //use this value in plat
 Board name: MKSGENLV1_0, change_value = megaatmega2560 //use this value in platform.ino. Search for 'change_value' and replace it with this value megaatmega2560
 -Board name: BTTSKRE3MINIV1_0, change_value = STM32F103RC_btt/ STM32F103RC_bigtree_NOUSB/ STM32F103RC_bigtree //use this value in platform.ino. Search for 'change_value' and replace it with this value STM32F103RC_bigtree_512K
 -Board name: BTTSKRE3MINIV1_2, change_value = STM32F103RC_btt_512K //use this value in platform.ino. Search for 'change_value' and replace it with this value STM32F103RC_bigtree_512K
+-Board name: BTTSKRE3MINIV2_0, change_value = STM32F103RC_btt_512K //use this value in platform.ino. Search for 'change_value' and replace it with this value STM32F103RC_bigtree_512K
 -Board name: BTTSKR1_3, change_value = LPC1768 //use this value in platform.ino. Search for 'change_value' and replace it with this value LPC1768
 -Board name: BTTSKR1_4, change_value = LPC1768 //use this value in platform.ino. Search for 'change_value' and replace it with this value LPC1768
 -Board name: BTTGTRV1_0, change_value = BIGTREE_GTR_V1_0 //use this value in platform.ino. Search for 'change_value' and replace it with this value BIGTREE_GTR_V1_0
@@ -120,7 +123,7 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
 #define x_driver_type change_value  //For the X driver. See below for your driver type and replace change_value with it.
 #define y_driver_type change_value  //For the Y driver. See below for your driver type and replace change_value with it.
 #define z_driver_type change_value  //For the Z driver. See below for your driver type and replace change_value with it.
-#define e_driver_type change_value  //For the E driver. See below for your driver type and replace change_value with it.
+#define e0_driver_type change_value  //For the E driver. See below for your driver type and replace change_value with it.
 #endif
 /* Drivers like TMC5130 that require SPI pins are not natively supported in Cheetah 5.0 firmware at the moment
 * Acceptable driver values: A4988, A5984, DRV8825, LV8729, L6470, L6474, POWERSTEP01, TB6560, TB6600, TMC2100, TMC2130, TMC2130_STANDALONE,
@@ -130,9 +133,11 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
 
 /*** *** *** Section 3 - Choose your printer name by uncommenting it. There should only be one active selection here.*** *** ***/
 
-//#define KAY3D_CoreXY // Choose this only if you have the KAY3D CoreXY based on the Ender 3. There are available .bin files also in the firmware section. 
+//#define KAY3D_CoreXY_E3 // Choose this only if you have the KAY3D CoreXY based on the Ender 3. There are available .bin files also in the firmware section. 
+//#define KAY3D_CoreXY_E5 // Choose this only if you have the KAY3D CoreXY based on the Ender 5/Pro. There are available .bin files also in the firmware section. 
+//#define KAY3D_CoreXY_E5P // Choose this only if you have the KAY3D CoreXY based on the Ender 5 Plus. There are available .bin files also in the firmware section. 
 //#define Ender_3 // Choose this if you have the Ender 3 or Ender 3-Pro
-//#define Ender_5 // Choose this if you have the Ender 5
+//#define Ender_5 // Choose this if you have the Ender 5 or Ender 5 Pro
 //#define Ender_5_2 // Choose this configuration ONLY if the first ender 5 configuration doesn't work
 //#define Ender_5plus // Chose this is you have the Ender 5-Plus. You need to have TFT lcd control. Cheetah 5.0 does not work with stock touchscreen.
 //#define Ender_5pro // Choose this if you have the Ender 5-Pro
@@ -195,7 +200,7 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
 //#define E3D_hemera_extruder // e-steps: 409. If over extruder please change e steps via GCODE M92XXX where XXX = number of correct steps
 //#define BMG_regular // e-steps: 140. BMG non-geared but dual drive option
 //#define BMG_dualdrive // e-steps: 415. BMG gear-reduction, dual drive with TWO toothed gears. 
-//#define zesty_nimble // e-steps: 2700. Zesty Nimble extruder
+//#define Zesty_nimble // e-steps: 2700. Zesty Nimble extruder
 //#define SEEMECNCEZRSTRUDER // e-steps: 94.86
 //#define E3D_titanaero_extruder // e-steps: 837. TITAN AERO hotend's extruder
 //#define custom_extruder // Please use this if you have your own custom extruder with unique esteps. 
@@ -241,9 +246,10 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
 
 /*** *** *** Section 10 - If you have a sensor installed, choose the one you're using. Skip this section if you DO NOT have an auto bed levelling sensor installed *** *** ****/
 
+//#define KAVA_SENSOR
+//#define BLTOUCH //define this if you have a BL touch REGARDLESS of your BLtouch version
 //#define BLTOUCH_v3_v3_1 //define this ONLY if your bltouch is version 3 or 3.1. Check at the back of BLtouch's board if you are unsure
-//#define BLTOUCH //define this if you have a BL touch regardless of your BLtouch version
-//#define FIX_MOUNTED_PROBE //define this if you have a fixed probe sensor - capacitive/ inductive or the EZabl by TH3D
+//#define FIX_MOUNTED_PROBE //define this if you have a fixed probe sensor - capacitive sensor
 //#define TOUCH_MI_PROBE // define this if you have a TOUCH-MI sensor.
 
 /*** *** ***  Section 11A - Customize your Auto and Manual mesh bed leveling settings here. Otherwise ignore this section *** *** ***/
@@ -271,12 +277,14 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
 
 /*** *** *** Section 12 - Choose your Fan Duct that you used to mount the ABL. Only for Ender-3/Pro at the moment. You should only have one active selection here. Ignore if you don't have a auto bed levelling sensor *** *** ***/ 
 
-//#define Herome_fanduct_40105015 //choose this if you use the hero me fan duct from thingiverse with single 4010 or 5015 fan. thing: 3182917
-//#define Herome_fanduct_dual5015 //choose this if you use the hero me fan duct from thingiverse with dual 5015 fans. thing: 3182917
-//#define Bltouch_creality_kit //choose this if you are using the original bltouch mount from Creality's BLTouch kit
-//#define Petsfang_fanduct //choose this if you use the petsfang duct from thingiverse. thing: 2759439
-//#define Simple_bltouch_mount //thingiverse: thing:3148733 Only works with stock & microswiss hotend. Use above mounts for other hotends such as E3D V6/ Mosquito
-//#define Custom_ABL_mount //If you do not use any of these mounts on an Ender 3 or have another machine, uncomment this to declare your own probe to nozzle values
+//#define KAY3DCoreXY_KAVA_E3 //choose this if you use the stock kava sensor mount for KAY3D CoreXY based on the Ender 3/ 5/ 5 Pro
+//#define KAY3DCoreXY_BLTOUCH_E5P //choose this if you use a BLTOUCH and the included E5P CoreXY mount for KAY3D CoreXY based on the Ender 5 Plus 
+//#define Herome_fanduct_40105015 //choose this if you use Ender 3/pro, the hero me fan duct from thingiverse with single 4010 or 5015 fan. thing: 3182917
+//#define Herome_fanduct_dual5015 //choose this if you use Ender 3/pro, the hero me fan duct from thingiverse with dual 5015 fans. thing: 3182917
+//#define Bltouch_creality_kit //choose this if you use Ender 3/pro, the original bltouch mount from Creality's BLTouch kit
+//#define Petsfang_fanduct //choose this if you use Ender 3/pro, the petsfang duct from thingiverse. thing: 2759439
+//#define Simple_bltouch_mount //thingiverse: thing:3148733 Only works with stock & microswiss hotend on Ender 3/Pro Only. Use above mounts for other hotends such as E3D V6/ Mosquito
+//#define Custom_ABL_mount //If you do not use any of these mounts on your machine, uncomment this to declare your own probe to nozzle values
 
 /*if have a Custom ABL mount and need to put your own values, please use change_value to define your values below. If not, skip this section and continue below*/
 #if ENABLED(Custom_ABL_mount) 
@@ -286,8 +294,8 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
 /*** *** *** Section 13A - Filament Change Settings. This is where you configure your Filament change/ Pause settings *** *** ***/
 
 //#define ADVANCED_PAUSE_FEATURE  //Activate this feature if you want to have Filament change and Pause enabled.
-//#define Nozzle_topright_park // Nozzle is Automatically parked on top left of bed by default during pause & filament change. Define this if you want the nozzle to be parked on the top right instead.
-#define Total_filament_path change_value// Please measure the entire distance fron the Extruder to the the tip of the nozzle as accurately as possible. Replace change_value with your measured value here in mm units. NOT ft/inch.
+//#define Nozzle_topright_park // Nozzle is Automatically parked on top left of bed by default during pause & filament change. KAY3D CoreXY machines park on the rear instead. Define this if you want the nozzle to be parked on the top right instead.
+#define Total_filament_path change_value // Please measure the entire distance fron the Extruder to the the tip of the nozzle as accurately as possible. Replace change_value with your measured value here in mm units. NOT ft/inch.
 
 /*** *** *** Section 13B - Additional Sensors. E.g. Filament Sensors. This is where you activate and define your settings *** *** ***/
 //#define FILAMENT_RUNOUT_SENSOR // Define this if you have a filament sensor. Please ensure it is connected to your mainboard and NOT your TFT
@@ -302,7 +310,8 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
 #define DEFAULT_ACCELERATION          500    // X, Y, Z and E acceleration for printing moves. Change if you like
 #define DEFAULT_RETRACT_ACCELERATION  500    // E acceleration for retracts. Change if you like
 #define DEFAULT_TRAVEL_ACCELERATION   500    // X, Y, Z acceleration for travel (non printing) moves. Change if you like
-#define HOMING_MOVEMENT_SPEEDK 1 // Acceptable values are 1 (default), 2, 3, 4, 5 and 6. Please watch out for speeds 5 and 6. These changes your printer's XY homing AND LCD XY manual movement speed.
+//#define FAST_PROBEK // If Enabled, probing speed across mulitple probes will be the same. Only do this if your sensor is accurate from the get go
+#define HOMING_MOVEMENT_SPEEDK 3 // Acceptable values are 1 (default), 2, 3, 4, 5 and 6. Please watch out for speeds 5 and 6. These changes your printer's XY homing AND LCD XY manual movement speed.
 #if DISABLED(CLASSIC_JERK)
   #define JUNCTION_DEVIATION_MM 0.08 // (mm) Distance from real junction edge. You can tune this and change it at a later time.
 #endif
@@ -313,6 +322,7 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
 /************************************************ONE LAST SET UP*************************************************************************/
 /****************************************************************************************************************************************/
 /****************************************************************************************************************************************/
+
 
 /**
  * Configuration.h
@@ -384,6 +394,7 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
 #else
 #define SHOW_BOOTSCREEN
 #endif
+
 // Show the bitmap in Marlin/_Bootscreen.h on startup.
 //#define SHOW_CUSTOM_BOOTSCREEN
 
@@ -395,6 +406,7 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
 /**
  * Select the serial port on the board to use for communication with the host.
  * This allows the connection of wireless adapters (for instance) to non-default port pins.
+ * Serial port -1 is the USB emulated serial port, if available.
  * Note: The first serial port (-1 or 0) will always be used by the Arduino bootloader.
  *
  * :[-1, 0, 1, 2, 3, 4, 5, 6, 7]
@@ -403,9 +415,6 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
 
 /**
  * Select a secondary serial port on the board to use for communication with the host.
- * This allows the connection of wireless adapters (for instance) to non-default port pins.
- * Serial port -1 is the USB emulated serial port, if available.
- *
  * :[-1, 0, 1, 2, 3, 4, 5, 6, 7]
  */
 //#define SERIAL_PORT_2 -1
@@ -419,7 +428,7 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
  *
  * :[2400, 9600, 19200, 38400, 57600, 115200, 250000, 500000, 1000000]
  */
-//#define BAUDRATE 250000
+//#define BAUDRATE 250000 //value defined in boards_def.h
 
 // Enable the Bluetooth serial interface on AT90USB devices
 //#define BLUETOOTH
@@ -430,7 +439,7 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
 #endif
 
 // Name displayed in the LCD "Ready" message and Info menu
-#define CUSTOM_MACHINE_NAME "KAY3D Cheetah 5.0 v1.3.4"
+#define CUSTOM_MACHINE_NAME "KAY3D Cheetah 5.0 R1.4.1"
 
 // Printer's unique ID, used by some programs to differentiate between machines.
 // Choose your own or use a service like http://www.uuidgenerator.net/version4
@@ -659,6 +668,7 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
  *   331 : (3.3V scaled thermistor 1 table for MEGA)
  *   332 : (3.3V scaled thermistor 1 table for DUE)
  *     2 : 200k thermistor - ATC Semitec 204GT-2 (4.7k pullup)
+ *   202 : 200k thermistor - Copymaster 3D
  *     3 : Mendel-parts thermistor (4.7k pullup)
  *     4 : 10k thermistor !! do not use it for a hotend. It gives bad resolution at high temp. !!
  *     5 : 100K thermistor - ATC Semitec 104GT-2/104NT-4-R025H42G (Used in ParCan & J-Head) (4.7k pullup)
@@ -770,7 +780,7 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
 #if ENABLED(PIDTEMP)
   #define PID_EDIT_MENU         // Add PID editing to the "Advanced Settings" menu. (~700 bytes of PROGMEM)
   #define PID_AUTOTUNE_MENU     // Add PID auto-tuning to the "Advanced Settings" menu. (~250 bytes of PROGMEM)
-  //#define PID_DEBUG             // Sends debug data to the serial port.
+  //#define PID_DEBUG             // Sends debug data to the serial port. Use 'M303 D' to toggle activation.
   //#define PID_OPENLOOP 1        // Puts PID in open loop. M104/M140 sets the output power from 0 to PID_MAX
   //#define SLOW_PWM_HEATERS      // PWM with very low frequency (roughly 0.125Hz=8s) and minimum state time of approximately 1s useful for heaters driven by a relay
   //#define PID_PARAMS_PER_HOTEND // Uses separate PID parameters for each extruder (useful for mismatched extruders)
@@ -780,10 +790,10 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
 
   // If you are using a pre-configured hotend then you can use one of the value sets by uncommenting it
 
-// yourown_machine
-  #define DEFAULT_Kp 21.73 //change this values at a later time after you do your own PID tuning
-  #define DEFAULT_Ki 1.54 //change this values at a later time after you do your own PID tuning
-  #define DEFAULT_Kd 76.55
+  // Ultimaker
+  #define DEFAULT_Kp 22.2
+  #define DEFAULT_Ki 1.08
+  #define DEFAULT_Kd 114
 
   // MakerGear
   //#define DEFAULT_Kp 7.0
@@ -862,12 +872,12 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
  * Note: For Bowden Extruders make this large enough to allow load/unload.
  */
 #define PREVENT_LENGTHY_EXTRUDE
-
 #if ENABLED(ADVANCED_PAUSE_FEATURE)
 #define EXTRUDE_MAXLENGTH (Total_filament_path + 1) // constant 1 added to ensure function works as required
 #else 
 #define EXTRUDE_MAXLENGTH 200 //dummy value
 #endif //endif ADVANCED_PAUSE_FEATURE
+
 //===========================================================================
 //======================== Thermal Runaway Protection =======================
 //===========================================================================
@@ -930,6 +940,7 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
   //#define ENDSTOPPULLUP_XMIN
   //#define ENDSTOPPULLUP_YMIN
   //#define ENDSTOPPULLUP_ZMIN
+
 #if ENABLED(Auto_bed_level)
   #define ENDSTOPPULLUP_ZMIN_PROBE
   #endif
@@ -956,6 +967,10 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
 #define X_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define Y_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #endif
+
+#if ENABLED (KAVA_SENSOR)
+#define FIX_MOUNTED_PROBE //ensure Marlin values are not lost
+#endif 
 
 #if ENABLED(FIX_MOUNTED_PROBE)
 #define Z_MIN_ENDSTOP_INVERTING true //Only applicable to NPN N.O. sensors
@@ -999,7 +1014,7 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
 //#define Z2_DRIVER_TYPE A4988
 //#define Z3_DRIVER_TYPE A4988
 //#define Z4_DRIVER_TYPE A4988
-#define E0_DRIVER_TYPE e_driver_type
+#define E0_DRIVER_TYPE e0_driver_type
 //#define E1_DRIVER_TYPE A4988
 //#define E2_DRIVER_TYPE A4988
 //#define E3_DRIVER_TYPE A4988
@@ -1051,6 +1066,7 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
  * Override with M92
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
+
 #define DEFAULT_AXIS_STEPS_PER_UNIT   { x_steps, y_steps, z_steps, e__steps }
 
 /**
@@ -1058,7 +1074,7 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
  * Override with M203
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 300, 300, 5, 25 }
+#define DEFAULT_MAX_FEEDRATE          { 300, 300, 8, 25 } //keep z at 8. otherwise your motor WILL SKIP
 
 //#define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
 #if ENABLED(LIMITED_MAX_FR_EDITING)
@@ -1086,9 +1102,9 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
  *   M204 R    Retract Acceleration
  *   M204 T    Travel Acceleration
  */
-//#define DEFAULT_ACCELERATION          3000    // X, Y, Z and E acceleration for printing moves
-//#define DEFAULT_RETRACT_ACCELERATION  3000    // E acceleration for retracts
-//#define DEFAULT_TRAVEL_ACCELERATION   3000    // X, Y, Z acceleration for travel (non printing) moves
+//#define DEFAULT_ACCELERATION          3000    // X, Y, Z and E acceleration for printing moves // values defined in section 14 in config.h
+//#define DEFAULT_RETRACT_ACCELERATION  3000    // E acceleration for retracts // values defined in section 14 in config.h
+//#define DEFAULT_TRAVEL_ACCELERATION   3000    // X, Y, Z acceleration for travel (non printing) moves // values defined in section 14 in config.h
 
 /**
  * Default Jerk limits (mm/s)
@@ -1112,7 +1128,7 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
   #endif
 #endif
 
-//#define DEFAULT_EJERK    5.0  // May be used by Linear Advance
+//#define DEFAULT_EJERK    5.0  // May be used by Linear Advance //value defined in section 14 of config.h
 
 /**
  * Junction Deviation Factor
@@ -1121,9 +1137,9 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
  *   https://reprap.org/forum/read.php?1,739819
  *   http://blog.kyneticcnc.com/2018/10/computing-junction-deviation-for-marlin.html
  */
-/*#if DISABLED(CLASSIC_JERK)
-  #define JUNCTION_DEVIATION_MM 0.013 // (mm) Distance from real junction edge
-#endif*/
+//#if DISABLED(CLASSIC_JERK)  //value defined in section 14 of config.h
+ // #define JUNCTION_DEVIATION_MM 0.013 // (mm) Distance from real junction edge  //value defined in section 14 of config.h
+//#endif
 
 /**
  * S-Curve Acceleration
@@ -1286,14 +1302,22 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
 //#define MIN_PROBE_EDGE 10
 
 // X and Y axis travel speed (mm/m) between probes
-#define XY_PROBE_SPEED 12000 //changed from default of 8000
-
+#if ENABLED (KAVA_SENSOR)
+#define XY_PROBE_SPEED 15000
+//for all other sensors probing speed change below
+#else 
+#define XY_PROBE_SPEED 5000
+#endif 
 // Feedrate (mm/m) for the first approach when double-probing (MULTIPLE_PROBING == 2)
 #define Z_PROBE_SPEED_FAST HOMING_FEEDRATE_Z
 
 // Feedrate (mm/m) for the "accurate" probe of each point
-#define Z_PROBE_SPEED_SLOW (Z_PROBE_SPEED_FAST / 2) //kava lite sensor can do /1 speeds on 2nd probe while maintaining accuracy
-
+#if ENABLED (FAST_PROBEK)
+#define Z_PROBE_SPEED_SLOW (Z_PROBE_SPEED_FAST / 1) 
+#else
+// change all other ABL settings below for NON fast probe
+#define Z_PROBE_SPEED_SLOW (Z_PROBE_SPEED_FAST / 2)
+#endif 
 /**
  * Multiple Probing
  *
@@ -1321,13 +1345,20 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
  *     But: `M851 Z+1` with a CLEARANCE of 2  =>  2mm from bed to nozzle.
  */
 
-#define Z_CLEARANCE_DEPLOY_PROBE    15// 15 Z Clearance for Deploy/Stow
+#if ENABLED (KAVA_SENSOR)
+#define Z_CLEARANCE_DEPLOY_PROBE   5 //2 // Z Clearance for Deploy/Stow
+#define Z_CLEARANCE_BETWEEN_PROBES  3 // Z Clearance between probe points
+#define Z_CLEARANCE_MULTI_PROBE     2 // Z Clearance between multiple probes
+//#define Z_AFTER_PROBING           5 // Z position after probing is done
+#else 
+//CHANGE BELOW PARAMETERS FOR ALL OTHER ABL settings
+#define Z_CLEARANCE_DEPLOY_PROBE   10 // Z Clearance for Deploy/Stow
 #define Z_CLEARANCE_BETWEEN_PROBES  5 // Z Clearance between probe points
 #define Z_CLEARANCE_MULTI_PROBE     5 // Z Clearance between multiple probes
-
 //#define Z_AFTER_PROBING           5 // Z position after probing is done
+#endif 
 
-#define Z_PROBE_LOW_POINT          -2 // Farthest distance below the trigger-point to go before stopping
+#define Z_PROBE_LOW_POINT          -3 // Farthest distance below the trigger-point to go before stopping
 
 // For M851 give a range for adjusting the Z probe offset
 #define Z_PROBE_OFFSET_RANGE_MIN -20
@@ -1337,6 +1368,7 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
 #if ENABLED(Auto_bed_level)
 #define Z_MIN_PROBE_REPEATABILITY_TEST
 #endif
+
 // Before deploy/stow pause for user confirmation
 //#define PAUSE_BEFORE_DEPLOY_STOW
 #if ENABLED(PAUSE_BEFORE_DEPLOY_STOW)
@@ -1382,14 +1414,14 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
 // @section machine
 
 // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
-/*#define INVERT_X_DIR false
-#define INVERT_Y_DIR true
-#define INVERT_Z_DIR false*/
+//#define INVERT_X_DIR false  // values are declared in either printer_def.h OR declare as custom printer. 
+//#define INVERT_Y_DIR true // values are declared in either printer_def.h OR declare as custom printer. 
+//#define INVERT_Z_DIR false // values are declared in either printer_def.h OR declare as custom printer. 
 
 // @section extruder
 
 // For direct drive extruder v9 set to true, for geared extruder set to false.
-//#define INVERT_E0_DIR false
+//#define INVERT_E0_DIR false // values are declared in either printer_def.h OR declare as custom printer. 
 #define INVERT_E1_DIR false
 #define INVERT_E2_DIR false
 #define INVERT_E3_DIR false
@@ -1404,33 +1436,34 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
 
 //#define UNKNOWN_Z_NO_RAISE      // Don't raise Z (lower the bed) if Z is "unknown." For beds that fall when Z is powered off.
 
-#if ENABLED(TOUCH_MI_PROBE)
-#define Z_HOMING_HEIGHT 10  // (mm) Minimal Z height before homing (G28) for Z clearance above the bed, clamps, ...
-#endif
+#if ENABLED(TOUCH_MI_PROBE) 
 
+#define Z_HOMING_HEIGHT 10  // (mm) Minimal Z height before homing (G28) for Z clearance above the bed, clamps, ... 
+
+#endif
                                   // Be sure to have this much clearance over your Z_MAX_POS to prevent grinding.
 
 //#define Z_AFTER_HOMING  10      // (mm) Height to move to after homing Z
 
 // Direction of endstops when homing; 1=MAX, -1=MIN
 // :[-1,1]
-/*#define X_HOME_DIR -1
-#define Y_HOME_DIR -1
-#define Z_HOME_DIR -1
+//#define X_HOME_DIR -1 // values are declared in either printer_def.h OR declare as custom printer. 
+//#define Y_HOME_DIR -1 // values are declared in either printer_def.h OR declare as custom printer. 
+//#define Z_HOME_DIR -1 // values are declared in either printer_def.h OR declare as custom printer. 
 
 // @section machine
 
 // The size of the print bed
-#define X_BED_SIZE 200
-#define Y_BED_SIZE 200
+//#define X_BED_SIZE 200
+//#define Y_BED_SIZE 200
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
-#define X_MIN_POS 0
-#define Y_MIN_POS 0
-#define Z_MIN_POS 0
-#define X_MAX_POS X_BED_SIZE
-#define Y_MAX_POS Y_BED_SIZE
-#define Z_MAX_POS 200*/
+//#define X_MIN_POS 0 // values are declared in either printer_def.h OR declare as custom printer. 
+//#define Y_MIN_POS 0 // values are declared in either printer_def.h OR declare as custom printer. 
+//#define Z_MIN_POS 0 // values are declared in either printer_def.h OR declare as custom printer. 
+//#define X_MAX_POS X_BED_SIZE // values are declared in either printer_def.h OR declare as custom printer. 
+//#define Y_MAX_POS Y_BED_SIZE // values are declared in either printer_def.h OR declare as custom printer. 
+//#define Z_MAX_POS 200 // values are declared in either printer_def.h OR declare as custom printer. 
 
 /**
  * Software Endstops
@@ -1453,7 +1486,7 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
     #define MIN_SOFTWARE_ENDSTOP_Z
   
   #endif
-  #endif
+#endif
 
 // Max software endstops constrain movement within maximum coordinate bounds
 #define MAX_SOFTWARE_ENDSTOPS
@@ -1478,12 +1511,12 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
 //#define FILAMENT_RUNOUT_SENSOR
 #if ENABLED(FILAMENT_RUNOUT_SENSOR)
   #define NUM_RUNOUT_SENSORS   1     // Number of sensors, up to one per extruder. Define a FIL_RUNOUT#_PIN for each.
-#if ENABLED(INVERT_FS_LOGIC)
+  #if ENABLED(INVERT_FS_LOGIC)
   #define FIL_RUNOUT_INVERTING true // Trigger's alternative as soon as invert filamentsensor logic is activated
   #else
   #define FIL_RUNOUT_INVERTING false // Logic inverting is automatically taken care in section 13
   #endif
-
+ // Set to true to invert the logic of the sensor.
 #if ENABLED(INVERTL_PINPULLUP_LOGIC)
   #define FIL_RUNOUT_PULLDOWN      // Use internal pulldown for filament runout pins.
   #else
@@ -1551,9 +1584,11 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
 #define AUTO_BED_LEVELING_BILINEAR
 #endif
 //#define AUTO_BED_LEVELING_UBL
+
 #if ENABLED(Manual_mesh_bed_level)
 #define MESH_BED_LEVELING
 #endif
+
 /**
  * Normally G28 leaves leveling disabled on completion. Enable
  * this option to have G28 restore the prior leveling state.
@@ -1639,17 +1674,17 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
   //#define UBL_Z_RAISE_WHEN_OFF_MESH 2.5 // When the nozzle is off the mesh, this value is used
                                           // as the Z-Height correction value.
 
-/*#elif ENABLED(MESH_BED_LEVELING)
+#elif ENABLED(MESH_BED_LEVELING)
 
   //===========================================================================
   //=================================== Mesh ==================================
   //===========================================================================
 
-  #define MESH_INSET 10          // Set Mesh bounds as an inset region of the bed
-  #define GRID_MAX_POINTS_X 3    // Don't use more than 7 points per axis, implementation limited.
-  #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
+  //#define MESH_INSET 10          // Set Mesh bounds as an inset region of the bed
+  //#define GRID_MAX_POINTS_X 3    // Don't use more than 7 points per axis, implementation limited.
+  //#define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
-  //#define MESH_G28_REST_ORIGIN // After homing all axes ('G28' or 'G28 XYZ') rest Z at Z_MIN_POS*/
+  //#define MESH_G28_REST_ORIGIN // After homing all axes ('G28' or 'G28 XYZ') rest Z at Z_MIN_POS
 
 #endif // BED_LEVELING
 
@@ -1657,9 +1692,9 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
  * Add a bed leveling sub-menu for ABL or MBL.
  * Include a guided procedure if manual probing is enabled.
  */
-#if ENABLED(Manual_mesh_bed_level)
+#if defined(Auto_bed_level) || defined(Manual_mesh_bed_level) 
 #define LCD_BED_LEVELING
-#endif 
+#endif
 
 #if ENABLED(LCD_BED_LEVELING)
   #define MESH_EDIT_Z_STEP  0.025 // (mm) Step size while manually probing Z axis.
@@ -1738,7 +1773,13 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
 #define HOMING_FEEDRATE_XY (110*60)
 #endif 
 
-#define HOMING_FEEDRATE_Z  (8*60) //default ABL homing feedrates
+#if ENABLED(Auto_bed_level)
+#define HOMING_FEEDRATE_Z  (8*60) //Please keep default at 8 if your Z motor starts skipping during homing/ manual movement
+#else
+#define HOMING_FEEDRATE_Z  (4*60) //Please keep default at 4 if your Z motor starts skipping during homing/ manual movement.
+
+#endif
+
 
 // Validate that endstops are triggered on homing moves
 #define VALIDATE_HOMING_ENDSTOPS
@@ -1867,7 +1908,6 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
  *    P1  Raise the nozzle always to Z-park height.
  *    P2  Raise the nozzle by Z-park amount, limited to Z_MAX_POS.
  */
-
 #if ENABLED(ADVANCED_PAUSE_FEATURE) // Default if condition is NOZZLE_PARK_FEATURE. Cheetah 5.0 will use nozzle park as default when M600 is issued
   #define NOZZLE_PARK_FEATURE // Automatic declaratin as soon as M600 is required.
   // Specify a park position as { X, Y, Z_raise }
@@ -1880,6 +1920,7 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
   #define NOZZLE_PARK_XY_FEEDRATE 100   // (mm/s) X and Y axes feedrate (also used for delta Z axis)
   #define NOZZLE_PARK_Z_FEEDRATE 5      // (mm/s) Z axis feedrate (not used for delta printers)
 #endif
+
 
 /**
  * Clean Nozzle Feature -- EXPERIMENTAL
@@ -2066,7 +2107,7 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
 //#define NO_LCD_MENUS
 #if ENABLED (Compress_space)
 #define SLIM_LCD_MENUS
-#endif
+#endif 
 
 //
 // ENCODER SETTINGS
@@ -2128,12 +2169,14 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
 // If you have a speaker that can produce tones, enable it here.
 // By default Marlin assumes you have a buzzer with a fixed frequency.
 //
+#if defined(Compress_space) || defined(BTTSKRE3MINIV1_2) //BTT skr MINI e3 v1.2 needs //#define SPEAKER to work
 
-#if defined(Compress_space) || defined(BTTSKRE3MINIV1_2) //BTT SKR Mini E3 v1.2 needs //#define SPEAKER to work. If you need to OFF it, remove the // on the next immediate line of code
 //#define SPEAKER
+
 #else
 #define SPEAKER
-#endif
+#endif 
+
 //
 // The duration and frequency for the UI feedback sound.
 // Set these to 0 to disable audio feedback in the LCD menus.

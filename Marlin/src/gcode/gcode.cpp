@@ -752,16 +752,21 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
         case 702: M702(); break;                                  // M702: Unload Filament
       #endif
 
+      #if ENABLED(CONTROLLER_FAN_EDITABLE)
+        case 710: M710(); break;                                  // M710: Set Controller Fan settings
+      #endif
+
       #if ENABLED(GCODE_MACROS)
         case 810: case 811: case 812: case 813: case 814:
         case 815: case 816: case 817: case 818: case 819:
         M810_819(); break;                                        // M810-M819: Define/execute G-code macro
       #endif
 
-#if HAS_BED_PROBE
+      #if HAS_BED_PROBE
         case 851: M851(); break;                                  // M851: Set Z Probe Z Offset
         case 8511: KAY3DM851(); break;                             // KAY3DM851: Displays OFFsets on Screen
-#endif
+      #endif
+
 
       #if ENABLED(SKEW_CORRECTION_GCODE)
         case 852: M852(); break;                                  // M852: Set Skew factors
@@ -854,7 +859,11 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
 
       #if ENABLED(POWER_LOSS_RECOVERY)
         case 413: M413(); break;                                  // M413: Enable/disable/query Power-Loss Recovery
-        case 1000: M1000(); break;                                // M1000: Resume from power-loss
+        case 1000: M1000(); break;                                // M1000: [INTERNAL] Resume from power-loss
+      #endif
+
+      #if ENABLED(SDSUPPORT)
+        case 1001: M1001(); break;                                // M1001: [INTERNAL] Handle SD completion
       #endif
 
       #if ENABLED(MAX7219_GCODE)

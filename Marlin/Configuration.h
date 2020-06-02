@@ -433,6 +433,7 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
 // Enable the Bluetooth serial interface on AT90USB devices
 //#define BLUETOOTH
 
+
 // Choose the name from boards.h that matches your setup
 #ifndef MOTHERBOARD
   #define MOTHERBOARD motherboard_name

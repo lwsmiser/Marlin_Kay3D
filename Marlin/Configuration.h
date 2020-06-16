@@ -279,6 +279,7 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
 
 //#define KAY3DCoreXY_KAVA_E3 //choose this if you use the stock kava sensor mount for KAY3D CoreXY based on the Ender 3/ 5/ 5 Pro
 //#define KAY3DCoreXY_BLTOUCH_E5P //choose this if you use a BLTOUCH and the included E5P CoreXY mount for KAY3D CoreXY based on the Ender 5 Plus 
+//#define KAY3DCoreXY_KAVA_E5P // choose this if you use the the kava sensor and the included E5P CoreXY mount for KAY3D CoreXY based on the Ender 5 Plus
 //#define Herome_fanduct_40105015 //choose this if you use Ender 3/pro, the hero me fan duct from thingiverse with single 4010 or 5015 fan. thing: 3182917
 //#define Herome_fanduct_dual5015 //choose this if you use Ender 3/pro, the hero me fan duct from thingiverse with dual 5015 fans. thing: 3182917
 //#define Bltouch_creality_kit //choose this if you use Ender 3/pro, the original bltouch mount from Creality's BLTouch kit
@@ -305,7 +306,7 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
 /*** *** *** Section 14 - Advanced Printer Settings. Change them or you can leave them as default *** *** ***/
 
 //#define INVERT_XYZ // Define this function only if your XYZ is going in the wrong direction!!! This inverts all 3 axis(s) together. Does not work with Custom_Printer. Change settigns in that section!
-#define INVERT_E0_DIR true // This is for your Extruder's direction. Change value to false if you need your extruder motor to rotate the other way
+#define INVERT_E0_DIR false // This is for your Extruder's direction. Change value to false if you need your extruder motor to rotate the other way
 #define THERMAL_PROTECTION_LEVEL 2 // Acceptable values are 1 (default), 2 and 3. If you have false positives, choose 1. If you want more aggressive thermal runaway settings, choose 3.
 #define DEFAULT_ACCELERATION          500    // X, Y, Z and E acceleration for printing moves. Change if you like
 #define DEFAULT_RETRACT_ACCELERATION  500    // E acceleration for retracts. Change if you like
@@ -1304,7 +1305,7 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
 
 // X and Y axis travel speed (mm/m) between probes
 #if ENABLED (KAVA_SENSOR)
-#define XY_PROBE_SPEED 15000
+#define XY_PROBE_SPEED 10000
 //for all other sensors probing speed change below
 #else 
 #define XY_PROBE_SPEED 5000

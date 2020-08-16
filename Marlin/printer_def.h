@@ -94,7 +94,7 @@
 #define INVERT_Y_DIR true
 #define INVERT_Z_DIR true
 #define SHOW_CUSTOM_BOOTSCREEN_E3 // Show the bitmap in Marlin/_Bootscreen.h on startup.
-#define CR10_STOCKDISPLAY
+//#define CR10_STOCKDISPLAY
 #define CHOPPER_TIMING CHOPPER_DEFAULT_24V
 #define x_steps 80
 #define y_steps 80

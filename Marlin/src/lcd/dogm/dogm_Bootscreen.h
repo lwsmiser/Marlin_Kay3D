@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 #pragma once
@@ -25,18 +25,18 @@
  * Standard Marlin Boot Screen bitmaps
  *
  * Use the Marlin Bitmap Converter to make your own:
- * http://marlinfw.org/tools/u8glib/converter.html
+ * https://marlinfw.org/tools/u8glib/converter.html
  */
 
 #include "../../inc/MarlinConfig.h"
 
 #if ENABLED(SHOW_CUSTOM_BOOTSCREEN)
 
-#if ENABLED(Ender_3)
+  #if ENABLED(Ender_3)
 #include "../../../kay3d_bootscreens/_Bootscreen_kay3d.h"
-  #endif
+#endif
 
-    #if ENABLED(Ender_5)
+#if ENABLED(Ender_5)
 #include "../../../kay3d_bootscreens/_Bootscreen_kay3d.h"
 #endif
 
@@ -44,24 +44,24 @@
 #include "../../../kay3d_bootscreens/_Bootscreen_kay3d.h"
 #endif
 
-    #if ENABLED(Ender_5pro)
+#if ENABLED(Ender_5pro)
 #include "../../../kay3d_bootscreens/_Bootscreen_kay3d.h"
 #endif
 
-    #if ENABLED(CR_10)
+#if ENABLED(CR_10)
 #include "../../../kay3d_bootscreens/_Bootscreen_kay3d.h"
 #endif
 
 
-    #if ENABLED(CR_10S)
+#if ENABLED(CR_10S)
 #include "../../../kay3d_bootscreens/_Bootscreen_kay3d.h"
 #endif
 
-    #if ENABLED(Sidewinder_x1)
+#if ENABLED(Sidewinder_x1)
 #include "../../../kay3d_bootscreens/_Bootscreen_kay3d.h"
 #endif
 
-  #if ENABLED(Custom_printer)
+#if ENABLED(Custom_printer)
 #include "../../../kay3d_bootscreens/_Bootscreen_E3.h"
 #endif
 
@@ -92,6 +92,7 @@
 #if ENABLED(CR_10V2)
 #include "../../../kay3d_bootscreens/_Bootscreen_kay3d.h"
 #endif
+
   #ifndef CUSTOM_BOOTSCREEN_BMP_BYTEWIDTH
     #define CUSTOM_BOOTSCREEN_BMP_BYTEWIDTH CEILING(CUSTOM_BOOTSCREEN_BMPWIDTH, 8)
   #endif

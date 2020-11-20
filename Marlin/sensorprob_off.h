@@ -52,7 +52,10 @@
    #if ENABLED (KAY3DCoreXY_KAVA_E5P)
       #define NOZZLE_TO_PROBE_OFFSET { 47.5, -2, 0 }
       #endif 
-      
+
+  #if ENABLED (KAY3DCoreXY_KAVA_E5P_HEROME)
+      #define NOZZLE_TO_PROBE_OFFSET { -42, 0, 0 }
+      #endif 
 
     #if ENABLED(Herome_fanduct_40105015) //variable
       #define NOZZLE_TO_PROBE_OFFSET { -45.4, -12, 0 }

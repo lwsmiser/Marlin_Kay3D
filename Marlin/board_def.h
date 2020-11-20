@@ -20,6 +20,20 @@
 #define BAUDRATE 115200
 #endif
 
+#if ENABLED(BTTE3_TURBO)
+#define motherboard_name BOARD_BTT_SKR_E3_TURBO
+#define SERIAL_PORT -1
+#define SERIAL_PORT_2 0
+#define BAUDRATE 115200
+#endif
+
+#if ENABLED(TH3DEZBOARD_LITE)
+#define motherboard_name BOARD_TH3D_EZBOARD
+#define SERIAL_PORT -1
+//#define SERIAL_PORT_2 -1 //absent entry
+#define BAUDRATE 115200
+#endif
+
 
 #if ENABLED(BTTSKRE3MINIV1_2)
 #define motherboard_name BOARD_BTT_SKR_MINI_E3_V1_2
@@ -91,6 +105,20 @@
 #if ENABLED(Original_creality2)
 #define motherboard_name BOARD_RAMPS_13_EFB
 #define SERIAL_PORT 0
+#define BAUDRATE 115200
+#endif 
+
+#if ENABLED(Original_creality4)
+#define motherboard_name BOARD_CREALITY_V4 //only for V4.2.2 board
+#define SERIAL_PORT 1
+#define SERIAL_PORT_2 3
+#define BAUDRATE 115200
+#endif 
+
+#if ENABLED(Original_creality5)
+#define motherboard_name BOARD_CREALITY_V427 //only for V4.2.7 board
+#define SERIAL_PORT 1
+#define SERIAL_PORT_2 3
 #define BAUDRATE 115200
 #endif 
 

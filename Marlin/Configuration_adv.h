@@ -21,6 +21,8 @@
  */
 #pragma once
 
+/*** *** *** Section 15 - Configure your Linear Advance settings here *** *** ***/ 
+
 #define LIN_ADVANCE
 #if ENABLED(LIN_ADVANCE)
   //#define EXTRA_LIN_ADVANCE_K // Enable for second linear advance constants

@@ -1316,7 +1316,11 @@ Board name: FYSETCV1_1A, FYSETCV1_1B, FYSETCV1_2A, FYSETCV1_2B, change_value = S
 #define Z_PROBE_SPEED_FAST HOMING_FEEDRATE_Z
 
 // Feedrate (mm/min) for the "accurate" probe of each point
+#if ENABLED(FAST_PROBEK)
+#define Z_PROBE_SPEED_SLOW (Z_PROBE_SPEED_FAST / 1)
+#else
 #define Z_PROBE_SPEED_SLOW (Z_PROBE_SPEED_FAST / 2)
+#endif
 
 /**
  * Multiple Probing
